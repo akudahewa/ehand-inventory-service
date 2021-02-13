@@ -1,0 +1,62 @@
+spring:
+  profiles:
+    active: jump
+  application:
+    name: inventory
+    prefix: inventory
+  security:
+    enabled: false
+  http:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+      enabled: true
+
+server:
+  port: 8090
+  ssl:
+    enabled: false
+  servlet:
+    context-path: /inventory-service
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: "/home/amila/logs/inventory-service"
+      prefix: access_log
+      buffered: false
+      suffix: .log
+      file-date-format: .yyyy-MM-dd
+      pattern: "%h %l %u %t %r %s %b %D"
+
+security:
+  basic:
+    enabled: false
+
+management:
+  security:
+    enabled: false
+  context-path: /actuator
+
+
+configurations:
+  offers:
+    pageSize: 100
+  tariffs:
+    resultSetSize: 50
+    errorMessage: Too many result to show! Please provide a filter.
+  siteDetails:
+    resultSetSize: 50
+    errorMessage: Too many result to show! Please provide a filter.
+
+endpoints:
+  health:
+    enabled: true
+  beans:
+    enabled: true
+  auditevents:
+    enabled: true
+  configprops:
+    enabled: true
+
+
+
