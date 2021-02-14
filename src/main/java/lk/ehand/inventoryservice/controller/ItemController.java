@@ -2,29 +2,33 @@ package lk.ehand.inventoryservice.controller;
 
 import lk.ehand.inventoryservice.domain.Item;
 import lk.ehand.inventoryservice.repository.ItemRepository;
-import lk.ehand.inventoryservice.service.ItemService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 @RestController
 @RequestMapping(value = "/api")
 @Slf4j
 public class ItemController {
 
-//    @Autowired
-//    private ItemRepository itemRepository;
-    @Autowired
-    private ItemService itemService;
-//    @Autowired
-//    public  ItemController(ItemRepository itemRepository){
-//        this.itemRepository =itemRepository;
-//    }
+    private ItemRepository itemRepository;
 
-    public String createItem(@RequestBody Item item){
-//       log.info("POST-> Item create");
-       return itemService.get();
+    public  ItemController(ItemRepository itemRepository){
+        this.itemRepository =itemRepository;
+    }
+
+    @PostMapping(value = "/item", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Item createItem(@RequestBody Item item){
+        log.info("POST-> Item create");
+        return itemRepository.save(item);
+    }
+
+    @GetMapping(value = "/item",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Item> getAll(@RequestParam(required = true) int shopId){
+        log.info("GET->Item retrieve,shopId:{}",shopId);
+        return itemRepository.findAll();
     }
 }

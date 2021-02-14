@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: jump
+    active: dev
   application:
     name: inventory
     prefix: inventory
@@ -21,7 +21,7 @@ server:
   tomcat:
     accesslog:
       enabled: true
-      directory: "/home/amila/logs/inventory-service"
+      directory: "~/logs/inventory-service"
       prefix: access_log
       buffered: false
       suffix: .log
