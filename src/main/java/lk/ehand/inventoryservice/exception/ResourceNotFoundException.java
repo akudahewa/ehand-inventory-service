@@ -6,29 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Slf4j
-@ResponseStatus(value=HttpStatus.NOT_FOUND)
+@ResponseStatus(HttpStatus.NOT_FOUND)
 public class ResourceNotFoundException extends RuntimeException{
-    private String resource;
-    private String field;
-    private String error;
+    private static final long serialVersionUID = 1L;
 
-    public ResourceNotFoundException(String resource,String field,
-                                     String error){
-//        log.error("{} not found :{}",resource,error);
-        this.resource =resource;
-        this.field=field;
-        this.error =error;
-    }
-
-    public String getResource() {
-        return resource;
-    }
-
-    public String getField() {
-        return field;
-    }
-
-    public String getError() {
-        return error;
+    public ResourceNotFoundException(String message) {
+        super(message);
     }
 }
