@@ -1,35 +1,38 @@
 package lk.ehand.inventoryservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.*;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "items")
+@Table(name = "shops")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt,updatedAt"})
-public class Item implements Serializable {
+
+public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "shopId",nullable = false)
-    private Shop shop;
+
     @NotBlank
     private String name;
     private String description;
-    private String supplier;
+    private String owner;
     private String status;
+    @OneToMany(mappedBy = "shop",fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Item> items;
+
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -39,16 +42,15 @@ public class Item implements Serializable {
     @LastModifiedDate
     private Date updatedAt;
 
+//    public Shop(@NotBlank String name, String description, String owner, String status) {
+//        this.name = name;
+//        this.description = description;
+//        this.owner = owner;
+//        this.status = status;
+//    }
+
     public String getName() {
         return name;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
     }
 
     public void setName(String name) {
@@ -63,12 +65,12 @@ public class Item implements Serializable {
         this.description = description;
     }
 
-    public String getSupplier() {
-        return supplier;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setSupplier(String supplier) {
-        this.supplier = supplier;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getStatus() {
@@ -83,17 +85,19 @@ public class Item implements Serializable {
         return id;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
 
     public Date getUpdatedAt() {
         return updatedAt;
-    }
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
